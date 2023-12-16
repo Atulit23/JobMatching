@@ -7,22 +7,13 @@ from sklearn.metrics.pairwise import cosine_similarity
 
 app = Flask(__name__)
 
-nlp = spacy.load("en_core_web_sm")
 vectorizer = TfidfVectorizer()
 
 data = joblib.load('job_data.joblib')
 job_vectors = vectorizer.fit_transform(data)
 
 def preprocess_text(text):
-    doc = nlp(text)
-    print(doc)
-    tokens = [token.lemma_.lower() for token in doc if token not in STOP_WORDS]
-    return " ".join(tokens)
-
-def preprocess_text(text):
-    doc = nlp(text)
-    print(doc)
-    tokens = [token.lemma_.lower() for token in doc if token not in STOP_WORDS]
+    tokens = [token.lower() for token in text if token not in STOP_WORDS]
     return " ".join(tokens)
 
 @app.route('/', methods=['POST', 'GET'])
